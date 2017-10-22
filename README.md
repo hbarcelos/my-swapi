@@ -19,3 +19,7 @@ Cleaning up the database:
 ```
 npm run db:clean
 ```
+
+## API
+
+See the [documentation](https://documenter.getpostman.com/view/400811/swapi/71FWBDk).
