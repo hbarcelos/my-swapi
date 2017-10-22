@@ -1,0 +1,37 @@
+{
+  "name": "swapi-test",
+  "version": "1.0.0",
+  "description": "Little SWAPI test",
+  "main": "app.js",
+  "scripts": {
+    "test": "ava",
+    "prestart": "npm run db:setup",
+    "start": "babel-node src/app.js",
+    "start:watch": "nodemon -w src/ --exec 'npm run start'",
+    "db:setup": "mkdir -p ./storage/ && touch ./storage/swapi.db",
+    "db:clean": "echo '' > ./storage/swapi.db"
+  },
+  "author": "Henrique Barcelos <rick.hjpbarcelos@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "joi": "^13.0.1",
+    "koa": "^2.3.0",
+    "koa-body": "^2.5.0",
+    "koa-router": "^7.2.1",
+    "sequelize": "^4.15.0",
+    "speckoloo": "^0.7.2",
+    "sqlite3": "^3.1.13"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.9.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "nodemon": "^1.12.1"
+  }
+}
