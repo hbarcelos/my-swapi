@@ -1,6 +1,12 @@
-import TableView from '../components/table-view.jsx'
-import { showAdd, showEdit, remove } from '../controllers/people.controller'
-import actionTypes from '../conf/action-types'
+import ListView from '../components/list-view.jsx'
+import { createStore } from 'redux'
+import { Provider, connect } from 'react-redux'
+
+const actionTypes = {
+  SHOW_ADD: 'showAdd',
+  SHOW_EDIT: 'showEdit',
+  REMOVE: 'remove'
+}
 
 const initialState = {
   dataList: [{
@@ -17,30 +23,44 @@ const columns = [{
   accessor: 'name'
 }]
 
-export default function BodyContainer (state = initialState, action) {
+const mapStateToProps = ({ dataList }) => ({
+  data: dataList,
+  columns
+})
+
+const mapDispatchToProps = dispatch => ({
+  onAdd: () => dispatch({
+    type: actionTypes.SHOW_ADD
+  }),
+  onEdit: ({ id }) => dispatch({
+    type: actionTypes.SHOW_EDIT,
+    id
+  }),
+  onDelete: ({ id }) => dispatch({
+    type: actionTypes.REMOVE,
+    id
+  })
+})
+
+const reducer = (state = initialState, action) => {
+  console.log(action)
   switch (action.type) {
-    case actionTypes.SHOW_LIST:
-      return { ...state }
+    case actionTypes.SHOW_ADD:
+      return state
+    case actionTypes.SHOW_EDIT:
+      return state
+    case actionTypes.REMOVE:
+      return state
     default:
-      return {}
+      return state
   }
 }
 
-function Body({ view, subProps }) {
-  let CurrentView
+const store = createStore(reducer)
 
-  switch (view) {
-    case 'list':
-      CurrentView = <TableView columns={subProps.columns}
-        onEdit={subProps.showEdit}
-        onDelete={subProps.remove}
-        onAdd={subProps.showAdd}
-        data={subProps.data} />
-  }
+const Container = connect(mapStateToProps, mapDispatchToProps)(ListView)
 
-  return (
-    <div id="body">
-      <CurrentView />
-    </div>
-  )
-}
+export default () => (
+  <Provider store={store}>
+    <Container />
+  </Provider>)

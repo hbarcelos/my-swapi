@@ -18,7 +18,7 @@ const actionColumns = ({ onEdit, onDelete }) => [{
   ]
 }]
 
-export default function Body ({ columns, data, onAdd, onEdit, onDelete }) {
+export default function ListView ({ columns, data, onAdd, onEdit, onDelete }) {
   return (
     <div className="table-view">
       <button onClick={onAdd}>+</button>
