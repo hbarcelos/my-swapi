@@ -2,9 +2,9 @@ const { resolve } = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  entry: './public/app.jsx',
+  entry: './client/app.jsx',
   output: {
-    path: resolve(__dirname, 'public/dist'),
+    path: resolve(__dirname, 'client/dist'),
     filename: 'bundle.js'
   },
   module: {

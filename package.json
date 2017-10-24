@@ -5,12 +5,15 @@
   "main": "app.js",
   "scripts": {
     "test": "ava",
-    "prestart": "npm run db:setup",
-    "start": "babel-node src/app.js",
-    "start:watch": "nodemon -w src/ --exec 'npm run start'",
+    "postinstall": "npm run build && npm run db:setup",
+    "start": "npm run server:start && npm run client:start",
+    "client:start": "http-server ./client -p 3001",
+    "server:start": "babel-node server/app.js",
+    "server:start:watch": "nodemon -w server/ --exec 'npm run server:start'",
     "db:setup": "mkdir -p ./storage/ && touch ./storage/swapi.db",
     "db:clean": "echo '' > ./storage/swapi.db",
-    "build": "webpack"
+    "build": "webpack",
+    "build:watch": "webpack --watch"
   },
   "author": "Henrique Barcelos <rick.hjpbarcelos@gmail.com>",
   "license": "MIT",
@@ -21,6 +24,7 @@
     "koa-router": "^7.2.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
     "react-table": "^6.6.0",
     "redux": "^3.7.2",
     "sequelize": "^4.15.0",
@@ -41,6 +45,7 @@
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
+    "http-server": "^0.10.0",
     "nodemon": "^1.12.1",
     "style-loader": "^0.19.0",
     "webpack": "^3.8.1"
