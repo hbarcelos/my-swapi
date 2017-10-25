@@ -22,12 +22,14 @@ const mapStateToProps = ({ data, error }, { columns }) => ({
   columns
 })
 
-const buildMapDispatchToProps = apiService => dispatch => ({
+const buildMapDispatchToProps = (resource, apiService) => dispatch => ({
   onAdd: () => dispatch({
-    type: actionTypes.SHOW_ADD
+    type: actionTypes.SHOW_ADD,
+    route: resource
   }),
   onEdit: ({ id }) => dispatch({
     type: actionTypes.SHOW_EDIT,
+    route: resource,
     id
   }),
   onDelete: ({ id }) =>
@@ -46,8 +48,10 @@ const reducer = (state = initialState, action) => {
   console.log(action)
   switch (action.type) {
     case actionTypes.SHOW_ADD:
+      window.location.hash = `/${action.route}`
       return state
     case actionTypes.SHOW_EDIT:
+      window.location.hash = `/${action.route}/${action.id}`
       return state
     case actionTypes.REMOVE:
       return {
@@ -72,9 +76,8 @@ const reducer = (state = initialState, action) => {
 
 const store = createStore(reducer, applyMiddleware(thunk))
 
-export default ({ columns, apiService }) => {
-  console.log(apiService)
-  const Container = connect(mapStateToProps, buildMapDispatchToProps(apiService))(ListView)
+export default ({ columns, apiService, resource }) => {
+  const Container = connect(mapStateToProps, buildMapDispatchToProps(resource, apiService))(ListView)
 
   apiService.getList()
     .then(data => store.dispatch({

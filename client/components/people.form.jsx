@@ -23,14 +23,15 @@ export default class PeopleFrom extends React.Component {
     super(props)
 
     this.state = {
-      id: props.id,
-      data: props.data || {},
-      populateData: props.populateData || {}
+      id: props.match.params.id,
+      data: {},
+      populateData: {}
     }
   }
 
   componentDidMount () {
     let entityData = Promise.resolve({})
+    console.log(this.state)
     if (this.state.id) {
       entityData = peopleApiService.getById(this.state.id)
     }
@@ -49,6 +50,17 @@ export default class PeopleFrom extends React.Component {
           starships
         }
       }))
+  }
+
+  updateState (evt) {
+    const name = evt.target.name
+    const selected = Array.from(evt.target.options)
+      .filter(op => op.selected)
+      .map(op => op.value)
+
+    console.log(name, selected)
+
+    this.setState({ data: { [name]: selected } })
   }
 
   onSubmit (ev) {
@@ -84,14 +96,16 @@ export default class PeopleFrom extends React.Component {
           <p>Name: <input name="name" type="text" ref="name" value={this.state.data.name} /></p>
 
           <p>Gender: <select name="gender" ref="gender"
-            defaultValue={this.state.data.gender}>
-            <option disabled="disabled" value="">Choose one...</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            value={this.state.data.gender}
+            onChange={this.updateState.bind(this)}>
+            <option key="none" disabled="disabled" value="">Choose one...</option>
+            <option key="male" value="male">Male</option>
+            <option key="female" value="female">Female</option>
           </select></p>
 
           <p>Films: <select name="films" ref="films" multiple="multiple"
-            defaultValue={(this.state.data.films || []).map(extractIdFromParam)}>
+            value={(this.state.data.films || []).map(extractIdFromParam)}
+            onChange={this.updateState.bind(this)}>
             <option disabled="disabled" value="">Choose one...</option>
             {
               (this.state.populateData.films || []).map(film => (
@@ -101,7 +115,8 @@ export default class PeopleFrom extends React.Component {
           </select></p>
 
           <p>Starships: <select name="starships" ref="starships" multiple="multiple"
-            defaultValue={(this.state.data.starships || []).map(extractIdFromParam)}>
+            value={(this.state.data.starships || []).map(extractIdFromParam)}
+            onChange={this.updateState.bind(this)}>
             <option disabled="disabled" value="">Choose one...</option>
             {
               (this.state.populateData.starships || []).map(starship => (
@@ -111,7 +126,8 @@ export default class PeopleFrom extends React.Component {
           </select></p>
 
           <p>Home Planet: <select name="home_planet" ref="home_planet"
-            defaultValue={extractIdFromParam((this.state.data.home_planet || ''))}>
+            value={extractIdFromParam((this.state.data.home_planet || ''))}
+            onChange={this.updateState.bind(this)}>
             <option disabled="disabled" value="">Choose one...</option>
             {
               (this.state.populateData.planets || []).map(planet => (
