@@ -39,3 +39,6 @@ export const update = async ({ models, request, params }) => {
 
 export const getById = async ({ models, request, params }) =>
   transform(await models.Starship.findById(params.id, queryOpts))
+
+export const removeById = ({ models, params }) =>
+  models.Starship.destroy({ where: { id: params.id } })

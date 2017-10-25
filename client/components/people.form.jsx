@@ -31,7 +31,6 @@ export default class PeopleFrom extends React.Component {
 
   componentDidMount () {
     let entityData = Promise.resolve({})
-    console.log(this.state)
     if (this.state.id) {
       entityData = peopleApiService.getById(this.state.id)
     }
@@ -54,13 +53,29 @@ export default class PeopleFrom extends React.Component {
 
   updateState (evt) {
     const name = evt.target.name
-    const selected = Array.from(evt.target.options)
-      .filter(op => op.selected)
-      .map(op => op.value)
+    const tagName = evt.target.tagName
 
-    console.log(name, selected)
+    let value = evt.target.value
 
-    this.setState({ data: { [name]: selected } })
+    if (tagName === 'SELECT') {
+      value = Array.from(evt.target.options)
+        .filter(op => op.selected)
+        .map(op => op.value)
+    }
+
+    const newState = Object.assign(
+      {},
+      this.state,
+      {
+        data: Object.assign(
+          {},
+          this.state.data,
+          { [name]: value }
+        )
+      }
+    )
+
+    this.setState(newState)
   }
 
   onSubmit (ev) {
@@ -92,8 +107,11 @@ export default class PeopleFrom extends React.Component {
       <div className="wrapper">
         { msg }
         <form onSubmit={ev => this.onSubmit(ev)}>
-          <input name="id" type="hidden" ref="id" value={this.state.data.id}/>
-          <p>Name: <input name="name" type="text" ref="name" value={this.state.data.name} /></p>
+          <input name="id" type="hidden" ref="id" value={this.state.data.id} readonly />
+          <p>Name: <input name="name" type="text" ref="name"
+            value={this.state.data.name}
+            onChange={this.updateState.bind(this)}
+          /></p>
 
           <p>Gender: <select name="gender" ref="gender"
             value={this.state.data.gender}
@@ -120,7 +138,7 @@ export default class PeopleFrom extends React.Component {
             <option disabled="disabled" value="">Choose one...</option>
             {
               (this.state.populateData.starships || []).map(starship => (
-                <option key={starship.id} value={starship.id}>{starship.title}</option>
+                <option key={starship.id} value={starship.id}>{starship.name}</option>
               ))
             }
           </select></p>

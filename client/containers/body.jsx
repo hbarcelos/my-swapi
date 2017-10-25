@@ -3,6 +3,8 @@ import { Route } from 'react-router-dom'
 import ShowList from './content/show-list.jsx'
 import PeopleForm from '../components/people.form.jsx'
 import FilmsForm from '../components/films.form.jsx'
+import StarshipsForm from '../components/starships.form.jsx'
+import PlanetsForm from '../components/planets.form.jsx'
 
 import peopleApiService from '../services/people.service'
 import filmsApiService from '../services/films.service'
@@ -24,7 +26,7 @@ const columns = {
   ],
   starships: [
     { Header: 'Id', accessor: 'id' },
-    { Header: 'Name', accessor: 'Name' }
+    { Header: 'Name', accessor: 'name' }
   ]
 }
 
@@ -102,6 +104,10 @@ const Body = () => {
       <Route exact path="/people-form/:id" component={PeopleForm} />
       <Route exact path="/films-form" component={FilmsForm} />
       <Route exact path="/films-form/:id" component={FilmsForm} />
+      <Route exact path="/starships-form" component={StarshipsForm} />
+      <Route exact path="/starships-form/:id" component={StarshipsForm} />
+      <Route exact path="/planets-form" component={PlanetsForm} />
+      <Route exact path="/planets-form/:id" component={PlanetsForm} />
     </div>
   )
 }

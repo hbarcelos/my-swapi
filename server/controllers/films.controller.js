@@ -41,3 +41,6 @@ export const update = async ({ models, request, params }) => {
 
 export const getById = async ({ models, request, params }) =>
   transform(await models.Film.findById(params.id, queryOpts))
+
+export const removeById = ({ models, params }) =>
+  models.Film.destroy({ where: { id: params.id } })

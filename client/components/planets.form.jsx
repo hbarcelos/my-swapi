@@ -1,7 +1,6 @@
 import filmsApiService from '../services/films.service'
 import peopleApiService from '../services/people.service'
 import planetsApiService from '../services/planets.service'
-import starshipsApiService from '../services/startships.service'
 
 function getSelectedValues (select) {
   return Array.from(select.options)
@@ -18,7 +17,7 @@ function extractIdFromParam (param) {
   return param.id
 }
 
-export default class FilmsForm extends React.Component {
+export default class PlanetsForm extends React.Component {
   constructor (props) {
     super(props)
 
@@ -32,21 +31,19 @@ export default class FilmsForm extends React.Component {
   componentDidMount () {
     let entityData = Promise.resolve({})
     if (this.state.id) {
-      entityData = filmsApiService.getById(this.state.id)
+      entityData = planetsApiService.getById(this.state.id)
     }
 
     return Promise.all([
       entityData,
       peopleApiService.getList(),
-      planetsApiService.getList(),
-      starshipsApiService.getList()
+      filmsApiService.getList()
     ])
-      .then(([ data, people, planets, starships ]) => this.setState({
+      .then(([ data, people, films ]) => this.setState({
         data,
         populateData: {
           people,
-          planets,
-          starships
+          films
         }
       }))
   }
@@ -54,18 +51,15 @@ export default class FilmsForm extends React.Component {
   onSubmit (ev) {
     ev.preventDefault()
     const id = this.refs.id.value
-    const title = this.refs.title.value
-    const episodeId = this.refs.episodeId.value
+    const name = this.refs.name.value
 
-    const characters = getSelectedValues(this.refs.characters)
+    const residents = getSelectedValues(this.refs.residents)
       .map(id => ({ id }))
-    const planets = getSelectedValues(this.refs.planets)
-      .map(id => ({ id }))
-    const starships = getSelectedValues(this.refs.starships)
+    const films = getSelectedValues(this.refs.films)
       .map(id => ({ id }))
 
-    console.log('Submitting form:', { id, title, episode_id: episodeId, characters, planets, starships })
-    filmsApiService.save({ id, title, episode_id: episodeId, characters, planets, starships })
+    console.log('Submitting form:', { id, name, residents, films })
+    planetsApiService.save({ id, name, residents, films })
       .then(jsonResponse => this.setState(
         Object.assign(this.state, { message: `OK - ID: ${jsonResponse.id}` })
       ))
@@ -111,16 +105,12 @@ export default class FilmsForm extends React.Component {
         { msg }
         <form onSubmit={ev => this.onSubmit(ev)}>
           <input name="id" type="hidden" ref="id" value={this.state.data.id}/>
-          <p>Title: <input name="title" type="text" ref="title" value={this.state.data.title}
+          <p>Name: <input name="name" type="text" ref="name" value={this.state.data.name}
             onChange={this.updateState.bind(this)}
           /></p>
 
-          <p>Episode ID: <input name="episode_id" type="number" ref="episodeId" value={this.state.data.episode_id}
-            onChange={this.updateState.bind(this)}
-          /></p>
-
-          <p>Characters: <select name="characters" ref="characters" multiple="multiple"
-            value={(this.state.data.characters || []).map(extractIdFromParam)}
+          <p>Residents: <select name="residents" ref="residents" multiple="multiple"
+            value={(this.state.data.residents || []).map(extractIdFromParam)}
             onChange={this.updateState.bind(this)}>
             <option disabled="disabled" value="">Choose one...</option>
             {
@@ -130,24 +120,13 @@ export default class FilmsForm extends React.Component {
             }
           </select></p>
 
-          <p>Starships: <select name="starships" ref="starships" multiple="multiple"
-            value={(this.state.data.starships || []).map(extractIdFromParam)}
+          <p>Films: <select name="films" ref="films" multiple="multiple"
+            value={(this.state.data.films || []).map(extractIdFromParam)}
             onChange={this.updateState.bind(this)}>
             <option disabled="disabled" value="">Choose one...</option>
             {
-              (this.state.populateData.starships || []).map(starship => (
-                <option key={starship.id} value={starship.id}>{starship.name}</option>
-              ))
-            }
-          </select></p>
-
-          <p>Planets: <select name="planets" ref="planets" multiple="multiple"
-            defaultValue={(this.state.data.planets || []).map(extractIdFromParam)}
-            onChange={this.updateState.bind(this)}>
-            <option disabled="disabled" value="">Choose one...</option>
-            {
-              (this.state.populateData.planets || []).map(planet => (
-                <option key={planet.id} value={planet.id}>{planet.name}</option>
+              (this.state.populateData.films || []).map(film => (
+                <option key={film.id} value={film.id}>{film.title}</option>
               ))
             }
           </select></p>
@@ -158,3 +137,4 @@ export default class FilmsForm extends React.Component {
     )
   }
 }
+
