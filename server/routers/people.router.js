@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 import { compose } from '../utils'
 import handler from './helpers/handler'
-import { create, getAll, update, getById } from '../controllers/people.controller'
+import { create, getAll, update, getById, removeById } from '../controllers/people.controller'
 import {
   augmentUrlFromId,
   augmentNestedEntityUrl,
@@ -32,4 +32,7 @@ export default router
   }))
   .get('get_person_id', '/people/:id', handler(getById, {
     transform: dataTransformation
+  }))
+  .delete('delete_person_id', '/people/:id', handler(removeById, {
+    transform: () => {}
   }))

@@ -14,7 +14,7 @@ export const create = async ({ models, request }) => {
   const person = await models.Person.create(request.body)
 
   await Promise.all([
-    person.setHome_planet(prop('id')(request.body.home_planet)),
+    person.setHome_planet(prop('id')(request.body.home_planet || {})),
     person.setStarships(pluck('id')(request.body.starships || [])),
     person.setFilms(pluck('id')(request.body.films || []))
   ])
@@ -31,7 +31,7 @@ export const update = async ({ models, request, params }) => {
 
   await Promise.all([
     person.update(request.body),
-    person.setHome_planet(prop('id')(request.body.home_planet)),
+    person.setHome_planet(prop('id')(request.body.home_planet || {})),
     person.setStarships(pluck('id')(request.body.starships || [])),
     person.setFilms(pluck('id')(request.body.films || []))
   ])
@@ -41,3 +41,6 @@ export const update = async ({ models, request, params }) => {
 
 export const getById = async ({ models, request, params }) =>
   transform(await models.Person.findById(params.id, queryOpts))
+
+export const removeById = ({ models, params }) =>
+  models.Person.destroy({ where: { id: params.id } })

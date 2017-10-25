@@ -3,10 +3,12 @@ import * as models from './models'
 
 import Koa from 'koa'
 import koaBody from 'koa-body'
+import cors from '@koa/cors'
 import apiRouter from './routers'
 
 const app = new Koa()
 
+app.use(cors())
 app.use(koaBody())
 
 // x-response-time

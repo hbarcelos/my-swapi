@@ -18,6 +18,7 @@
   "author": "Henrique Barcelos <rick.hjpbarcelos@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@koa/cors": "^2.2.1",
     "joi": "^13.0.1",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
@@ -25,7 +26,9 @@
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-form": "^2.0.1",
     "react-redux": "^5.0.6",
+    "react-select": "^1.0.0-rc.10",
     "react-table": "^6.6.0",
     "redux": "^3.7.2",
     "sequelize": "^4.15.0",
@@ -48,6 +51,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "http-server": "^0.10.0",
     "nodemon": "^1.12.1",
+    "redux-thunk": "^2.2.0",
     "style-loader": "^0.19.0",
     "webpack": "^3.8.1"
   }

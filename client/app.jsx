@@ -6,5 +6,3 @@ ReactDom.render(
   <Main />,
   document.getElementById('root')
 )
-
-console.log(document.getElementById('root'))

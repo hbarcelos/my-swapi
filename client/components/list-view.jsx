@@ -18,10 +18,28 @@ const actionColumns = ({ onEdit, onDelete }) => [{
   ]
 }]
 
-export default function ListView ({ columns, data, onAdd, onEdit, onDelete }) {
+export default function ListView ({ columns, data, error, onAdd, onEdit, onDelete }) {
+  let errorShow
+
+  if (error) {
+    errorShow = (
+      <div className="wrapper">
+        <div className="alert alert-error">
+          An error occurred:&nbsp;
+          <span>
+            { error.message }
+          </span>
+        </div>
+        <div className="spacer-v-s"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="table-view">
+      { errorShow }
       <button onClick={onAdd}>+</button>
+      <div className="spacer-v-xs"></div>
       <Table columns={columns.concat(
         actionColumns({ onEdit, onDelete })
       )} data={data} />
