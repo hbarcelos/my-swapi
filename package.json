@@ -6,8 +6,10 @@
   "scripts": {
     "test": "ava",
     "postinstall": "npm run build && npm run db:setup",
-    "start": "npm run server:start && npm run client:start",
+    "start": "npm run bg:server:start && npm run bg:client:start",
+    "bg:client:start": "http-server ./client -p 3001",
     "client:start": "http-server ./client -p 3001",
+    "bg:server:start": "babel-node server/app.js &",
     "server:start": "babel-node server/app.js",
     "server:start:watch": "nodemon -w server/ --exec 'npm run server:start'",
     "db:setup": "mkdir -p ./storage/ && touch ./storage/swapi.db",

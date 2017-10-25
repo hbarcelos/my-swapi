@@ -10,9 +10,10 @@ Regular:
 npm start
 ```
 
-Watch mode:
+Then go to:
+
 ```
-npm run start:watch
+http://localhost:3001/
 ```
 
 Cleaning up the database:
