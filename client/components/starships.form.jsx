@@ -126,7 +126,7 @@ export default class StarshipsForm extends React.Component {
             <option disabled="disabled" value="">Choose one...</option>
             {
               (this.state.populateData.films || []).map(film => (
-                <option key={film.id} value={film.id}>{film.name}</option>
+                <option key={film.id} value={film.id}>{film.title}</option>
               ))
             }
           </select></p>
